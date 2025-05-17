@@ -8,3 +8,8 @@ body, html, #root {
   height: 100%;
   overflow: hidden;
 }
+
+.keep-together {
+  white-space: nowrap;
+  display:  inline-block;
+}

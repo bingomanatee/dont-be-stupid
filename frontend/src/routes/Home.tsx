@@ -1,24 +1,40 @@
-import {Box, Button, Heading, Text} from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 
 export default function Home() {
-    return (
-        <Box layerStyle='page' textAlign="center" color="white">
-            <Box layerStyle="container" w='100%' direction='column' justifyContent='center'>
-                <Heading textStyle='displayHead'>
-                    Don’t Be Stupid
-                </Heading>
-                <Box layerStyle="heroText">
-                    <Text textStyle='display'>
-                        The Party Quiz that takes
-                        EVERYTHING YOU WON<br />
-                        for guessing the STUPIDEST ANSWER
-                    </Text>
-                </Box>
-
-                <Button bg='theme.400' textStyle='buttnDisplay' px={10} py={25} mt={8} color='theme.900' fontSize='2xl'>
-                    Let's play a game!
-                </Button>
-            </Box>
+  return (
+    <Box layerStyle="page" id="homepage">
+      <Box
+        layerStyle="container"
+        w="100%"
+        direction="column"
+        justifyContent="center"
+      >
+        <Heading textStyle="displayHead">Don’t Be Stupid</Heading>
+        <Box layerStyle="heroText">
+          <Text textStyle="display">
+            <span className="keep-together">
+              The party trivia game that takes&nbsp;
+            </span>
+            <span className="keep-together">EVERYTHING YOU HAVE</span>
+            <br />
+            <span className="keep-together">for guessing the&nbsp;</span>
+            <span className="keep-together">DUMBEST ANSWER </span>
+          </Text>
         </Box>
-    );
+        <Flex align="center" w="100R" direction="column">
+          <Button display>
+            <Text
+              textStyle="buttonDisplay"
+              color="textAccent"
+              style={{
+                textShadow: '3px 4px rgba(0,0,0,0.5)',
+              }}
+            >
+              Let's play a game!
+            </Text>
+          </Button>
+        </Flex>
+      </Box>
+    </Box>
+  );
 }
