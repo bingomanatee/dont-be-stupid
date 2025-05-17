@@ -16,7 +16,7 @@ export default function Home() {
                 </Box>
 
                 <Button bg='theme.400' textStyle='buttnDisplay' px={10} py={25} mt={8} color='theme.900' fontSize='2xl'>
-                    Start Quiz
+                    Let's play a game!
                 </Button>
             </Box>
         </Box>

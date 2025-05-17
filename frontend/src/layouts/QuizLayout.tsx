@@ -3,7 +3,7 @@ import {Box} from "@chakra-ui/react";
 
 export default function QuizLayout() {
     return (
-        <Box layerStyle='pc' bg='hsla(255, 70%, 40%, 60%)'>
+        <Box layerStyle='pc' >
             <Outlet />
         </Box>
     );
