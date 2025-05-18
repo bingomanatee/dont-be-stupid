@@ -2,6 +2,7 @@ import { ObjectCollection } from '@wonderlandlabs/forestry';
 import { sortBy } from 'lodash-es';
 import { useEffect, useRef, useState } from 'react';
 import type { Category } from '../types';
+import getQuizState, { type QuizStateValue } from './quiz.state';
 
 type StateFactoryProps = {
   fetch?: (url: string, options?: Record<string, any>) => Promise<any>;
@@ -35,16 +36,12 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
     {
       pick(id: string) {
         if (!id) return;
-        this.update((value: CatStateValue, seed: string) => {
-          const chosen = new Set(value.chosen.values());
-          if (!chosen.has(id)) chosen.add(seed);
-          else chosen.delete(id);
-          return { ...value, chosen };
-        }, id);
-
-        console.log('chosen is now:', this.value.chosen);
+        const chosen = new Set(this.get('chosen').values());
+        if (!chosen.has(id)) chosen.add(id);
+        else chosen.delete(id);
+        this.set('chosen', chosen);
       },
-      saveButtonPrompt() {
+      saveButtonPrompt(): string {
         const { cats, chosen } = this.value as CatStateValue;
 
         switch (chosen.size) {
@@ -63,17 +60,12 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
         }
       },
       clearAll() {
-        this.update((value: CatStateValue) => ({
-          ...value,
-          chosen: new Set(),
-        }));
+        this.set('chosen', new Set());
       },
       pickAll() {
-        this.update((value: CatStateValue) => {
-          const { cats } = value;
-          const chosen = new Set(cats.map(({ id }) => id));
-          return { ...value, chosen };
-        });
+        const cats = this.get('cats');
+        const chosen = new Set(cats.map(({ id }) => id));
+        this.set('chosen', new Set(chosen));
       },
       columns() {
         if (!Array.isArray(this.value?.cats)) return [];
@@ -84,11 +76,19 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
         ];
       },
       async init() {
-        const cats = await fetch('/api/cats/init');
+        const cats = await fetch!('/api/cats/init');
         this.set('cats', cats);
+        const { value } = getQuizState() as { value: QuizStateValue };
+        if (value.chosenCats.size) {
+          this.set('chosenCats', new Set(value.chosenCats.values()));
+        }
+      },
+      saveChoices() {
+        const quizState = getQuizState();
+        quizState.set('chosenCats', Array.from(this.get('chosen')?.values()));
       },
       async load() {
-        const cats = await fetch('/api/cats');
+        const cats = await fetch!('/api/cats');
         this.set('cats', sortBy(cats, 'name'));
       },
     },

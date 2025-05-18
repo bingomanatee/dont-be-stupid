@@ -57,6 +57,7 @@ export default function Cats() {
             as={Link}
             // @ts-ignore
             display
+            onClick={state.acts.saveChoices}
             disabled={!chosen.size}
           >
             {state.acts.saveButtonPrompt()}
