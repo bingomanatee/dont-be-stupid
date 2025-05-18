@@ -1,19 +1,11 @@
-import { Box, Button, Heading, List, Text } from '@chakra-ui/react';
-import { stateFactory } from './adminCats.state';
-import { useEffect, useRef, useState } from 'react';
+import { Box, Button, Flex, Heading, List, Text } from '@chakra-ui/react';
+import { useCatState } from '../../state/cats.state';
+import { CatAvatar } from '../../components/CatAvatar';
+
+console.log('updated file');
 
 export default function AdminCats() {
-  const state = useRef(null);
-  state.current ||= stateFactory({});
-
-  const [value, setValue] = useState(state.current.value);
-
-  useEffect(() => {
-    const sub = state.current?.subscribe(setValue);
-    console.log('state.current', state.current);
-    state.current?.acts.load();
-    return () => sub?.unsubscribe();
-  }, []);
+  const state = useCatState();
 
   return (
     <Box layerStyle="page">
@@ -22,27 +14,29 @@ export default function AdminCats() {
         <Heading textStyle="displayHead">Categories</Heading>
         <Box layerStyle="pageContent">
           <Button onClick={state.current?.acts.init} admin>
-            Initialize
+            Seed Categories
           </Button>
-          {Array.isArray(value?.cats) ? (
-            <Box layerStyle="listFrame">
-              <List.Root id="cat-list" variant="plain">
-                {value.cats?.map((c: unknown) => {
-                  if (c && c.name) {
-                    return (
-                      <List.Item layerStyle="listItem" key={c.__id}>
+          <Box layerStyle="listFrame">
+            <Flex
+              direction={{ base: 'column', md: 'row' }}
+              gap="8"
+              align="start"
+              justify="stretch"
+            >
+              {state.current?.acts.columns().map((catList, colIndex) => (
+                <List.Root key={colIndex} variant="plain" flex="1">
+                  {catList.map((c: any) => (
+                    <List.Item layerStyle="listItem" key={c.__id}>
+                      <Flex gap="4" align="center">
+                        <CatAvatar cat={c} />
                         <Text textStyle="adminListItem">{c.name}</Text>
-                      </List.Item>
-                    );
-                  }
-                  console.warn('bad cat:', c);
-                  return null;
-                })}
-              </List.Root>
-            </Box>
-          ) : (
-            'loading'
-          )}
+                      </Flex>
+                    </List.Item>
+                  ))}
+                </List.Root>
+              ))}
+            </Flex>
+          </Box>
         </Box>
       </Box>
     </Box>

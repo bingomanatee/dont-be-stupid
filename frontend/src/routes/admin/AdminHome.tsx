@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import AdminPanel from '../../components/AdminPanel';
 
@@ -16,7 +16,7 @@ export default function AdminHome() {
               direction="column"
               justify="stretch"
             >
-              <AdminPanel id="cat-panel" title="Categories">
+              <AdminPanel id="cat-panel" title="Cats">
                 <Button as={Link} to="/admin/cats" admin>
                   Edit
                 </Button>

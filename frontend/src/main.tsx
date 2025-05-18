@@ -8,7 +8,7 @@ import AdminQuestions from './routes/admin/Questions';
 import QuizLayout from './layouts/QuizLayout';
 import { ChakraProvider } from '@chakra-ui/react';
 import { system } from './theme';
-import Categories from './routes/Categories';
+import Cats from './routes/Cats';
 import AdminHome from './routes/admin/AdminHome';
 import AdminCats from './routes/admin/AdminCats';
 
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       {
         path: 'cats',
-        element: <Categories />,
+        element: <Cats />,
       },
     ],
   },

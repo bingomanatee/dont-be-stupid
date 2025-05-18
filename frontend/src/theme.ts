@@ -8,9 +8,100 @@ import {
   defineRecipe,
 } from '@chakra-ui/react';
 
+const sizer = { sm: 0.9, lg: 1.2, xl: 1.5 };
+
+export function makeFontSizes(root: string, size: number) {
+  return Object.keys(sizer).reduce(
+    (a, key) => {
+      a[`${root}_${key}`] = `${sizer[key] * size}rem`;
+      return a;
+    },
+    { [root]: `${size}rem` },
+  );
+}
+
+export function responsive(root: string) {
+  return Object.keys(sizer).reduce(
+    (a, key) => {
+      a[key] = `${root}_${key}`;
+      return a;
+    },
+    { md: root },
+  );
+}
+
+export function makeSpacing(root: string, size: number) {
+  return Object.keys(sizer).reduce(
+    (a, key) => {
+      a[`${root}_${key}`] = { value: `${sizer[key] * size}rem` };
+      return a;
+    },
+    { [root]: { value: `${size}rem` } },
+  );
+}
+
 const config = defineConfig({
   theme: {
     layerStyles: defineLayerStyles({
+      prompt: {
+        value: {
+          my: responsive('promptMy'),
+          mx: responsive('promptMx'),
+          bgColor: 'prompt',
+          px: responsive('promptPx'),
+          py: responsive('promptPy'),
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'center',
+        },
+      },
+      categoryTile: {
+        value: {
+          position: 'relative',
+          overflow: 'hidden',
+          borderRadius: 'md',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          height: '100%',
+          padding: 0,
+          _hover: {
+            '.categoryTileImage': {
+              opacity: 0,
+            },
+          },
+        },
+      },
+      categoryTileImage: {
+        value: {
+          position: 'absolute',
+          inset: 0,
+          bgSize: 'cover',
+          bgPosition: 'center',
+          transition: 'opacity 0.3s ease',
+        },
+      },
+      categoryTileOverlay: {
+        value: {
+          position: 'absolute',
+          inset: 0,
+          bgGradient: 'to-t',
+          gradientFrom: 'blackAlpha.900',
+          gradientTo: 'transparent',
+          zIndex: 1,
+        },
+      },
+      categoryTileContent: {
+        value: {
+          position: 'relative',
+          zIndex: 2,
+          textAlign: 'center',
+          px: 2,
+          pt: { base: 16, lg: 20, xl: 24 },
+          pb: 2,
+        },
+      },
+
       listFrame: {
         value: {
           borderWidth: '1px',
@@ -135,9 +226,10 @@ const config = defineConfig({
         body: { value: `'Oswald', sans-serif` },
       },
       fontSizes: {
-        md_sm: '0.9rem',
-        md_lg: '1.25rem',
-        md_xl: '1.5rem',
+        ...makeFontSizes('sm', 0.9),
+        ...makeFontSizes('md', 1),
+        ...makeFontSizes('lg', 1.25),
+        ...makeFontSizes('xl', 1.5),
         disp: {
           xl_sm: {
             value: '2.5rem',
@@ -197,6 +289,10 @@ const config = defineConfig({
             value: 'hsl(36,100%,95%)',
           },
         },
+        categoryButton: {
+          unselected: '{colors.theme.400}',
+          selected: '{colors.theme.700}',
+        },
         button: {
           a: { value: '{colors.gray.100}' },
           b: { value: '{colors.gray.200}' },
@@ -242,26 +338,46 @@ const config = defineConfig({
           900: { value: 'hsla(256, 70%, 50%, 90%)' },
           1000: { value: 'hsla(256, 70%, 50%, 100%)' },
         },
+        prompt: 'transparent',
       },
       lineHeights: {
         compact: { value: '90%' },
         normal: { value: 'normal' },
-        relaxed: { value: '120%' },
+        relaxed: { value: '140%' },
       },
       spacing: {
-        pageMargin: { value: '40rem' },
-        pageMargin_sm: { value: '5rem' },
-        pageMargin_lg: { value: '6rem' },
-        pageMargin_xl: { value: '8rem' },
+        ...makeSpacing('pageMargin', 6),
+        ...makeSpacing('promptPx', 0.25),
+        ...makeSpacing('promptPy', 0.5),
+        ...makeSpacing('promptMx', 3),
+        ...makeSpacing('promptMy', 0.5),
+        ...makeSpacing('buttonPy', 0.2),
       },
     },
 
     textStyles: {
       adminListItem: {
         value: {
-          fontSize: { base: 'md', lg: 'md_l', xl: 'md_xl' },
+          fontSize: responsive('md'),
           fontWeight: 500,
           fontFamily: '"Playfair Display", Georgia, sans-serif',
+        },
+      },
+      prompt: {
+        value: {
+          fontSize: responsive('lg'),
+          fontWeight: 500,
+          fontFamily: 'Oswald, "Helvetica Narrow", sans-serif',
+        },
+      },
+      categoryButtonUnselected: {
+        value: {
+          mt: 1,
+          fontSize: { base: 'md', lg: 'lg' },
+          lineClamp: 1,
+          fontFamily: 'Oswald',
+          textAlign: 'center',
+          color: 'theme.900',
         },
       },
       iconicText: {
@@ -332,19 +448,29 @@ const config = defineConfig({
     },
     recipes: {
       button: defineRecipe({
-        baseStyle: {
+        base: {
+          flex: 0,
           h: 'auto',
+          bg: 'blue',
           rounded: 'full',
           _hover: {
             bg: undefined,
           },
           transition: 'none',
+          textTransform: 'uppercase',
+          lineHeight: 'relaxed',
+          fontSize: responsive('lg'),
         },
         variants: {
-          size: {
-            md: {
-              h: 'auto',
-              rounded: 'full',
+          normal: {
+            true: {
+              h: '200px',
+              px: 4,
+              py: 1,
+              flex: 0,
+              bgColor: 'theme.700',
+              lineHeight: 'relaxed',
+              textTransform: 'uppercase',
             },
           },
           admin: {
@@ -354,7 +480,7 @@ const config = defineConfig({
               gradientFrom: 'button.a',
               gradientTo: 'button.b',
               color: 'black',
-              fontSize: { base: 'md', large: 'md_l', xl: 'md_xl' },
+              fontSize: responsive('md'),
               lineHeight: 'relaxed',
               fontWeight: 'bold',
               textTransform: 'uppercase',
@@ -394,6 +520,10 @@ const config = defineConfig({
             },
           },
         },
+        defaultVariants: {
+          variant: 'solid',
+          size: 'md',
+        },
       }),
     },
   },
@@ -415,4 +545,5 @@ const config = defineConfig({
   },
 });
 
+console.log('config', config);
 export const system = createSystem(defaultConfig, config);
