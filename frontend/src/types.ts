@@ -1,6 +1,6 @@
 export type Category = {
   name: string;
-  __id: string;
+  id: string;
   imageUrl?: string;
   photographer?: string;
 };

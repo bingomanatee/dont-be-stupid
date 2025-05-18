@@ -1,39 +1,63 @@
 import { Box, SimpleGrid, Text } from '@chakra-ui/react';
 import type { Category } from '../types';
+import { useCatState } from '../state/cats.state';
 
 // AI assisted
 type Props = { cats: Category[] };
 
-export function CatGrid(props: Props) {
-  const { cats } = props;
+export function CatGrid({ state, cats, chosen }) {
   if (!Array.isArray(cats)) {
     return null;
   }
   return (
-    <SimpleGrid
-      columnGap={1}
-      rowGap={1}
-      minChildWidth="200px" // auto-fills columns based on this width
-      width="100%"
+    <Box layerStyle="catGridContainer">
+      <SimpleGrid
+        columnGap={0.5}
+        rowGap={0.5}
+        minChildWidth={{ base: 'fill', md: '200px' }}
+        mx={4}
+      >
+        {cats.map((cat: Category) => {
+          const isChosen = chosen.has(cat.id);
+
+          return <CatTile isChosen={isChosen} cat={cat} state={state} />;
+        })}
+      </SimpleGrid>
+    </Box>
+  );
+}
+
+function CatTile({ cat, isChosen, state }) {
+  return (
+    <Box
+      key={cat.id}
+      userSelect="none"
+      cursor="pointer"
+      layerStyle={isChosen ? 'categoryTileChosen' : 'categoryTile'}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        state.acts.pick(cat.id);
+      }}
     >
-      {cats.map((cat: any) => (
-        <Box key={cat.__id} layerStyle="categoryTile">
-          <Box
-            className="categoryTileImage"
-            layerStyle="categoryTileImage"
-            backgroundImage={`url(${cat.imageUrl})`}
-          />
-          <Box
-            className="categoryTileOverlay"
-            layerStyle="categoryTileOverlay"
-          />
-          <Box layerStyle="categoryTileContent">
-            <Text textStyle="categoryButtonUnselected">
-              {cat.name.replace(/.*:/, '')}
-            </Text>
-          </Box>
-        </Box>
-      ))}
-    </SimpleGrid>
+      {
+        <Box
+          className="categoryTileImage"
+          layerStyle={
+            isChosen ? 'categoryTileImageChosen' : 'categoryTileImage'
+          }
+          backgroundImage={`url(${cat.imageUrl})`}
+          style={!isChosen ? { filter: 'blur(20px)' } : {}}
+        />
+      }
+      <Box className="categoryTileOverlay" layerStyle="categoryTileOverlay" />
+      <Box layerStyle="categoryTileContent">
+        <Text
+          textStyle={isChosen ? 'categoryButtonSelected' : 'categoryButton'}
+        >
+          {cat.name.replace(/.*:/, '')}
+        </Text>
+      </Box>
+    </Box>
   );
 }

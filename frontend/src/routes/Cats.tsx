@@ -12,7 +12,7 @@ export function Prompt({ children }) {
 }
 
 export default function Cats() {
-  const [state, { cats }] = useCatState();
+  const [state, cats, chosen] = useCatState();
   // @ts-ignore
   return (
     <Box layerStyle="page" id="homepage">
@@ -24,33 +24,42 @@ export default function Cats() {
       >
         <Heading textStyle="displayHead">Don’t Be Stupid</Heading>
         <Prompt>
-          <Flex direction="row" align="center" gap={8} justify="center">
-            <Text textStyle="prompt">
-              Click on the categories you want to be quizzed on.
-            </Text>
+          <Flex
+            direction={{ base: 'column', lg: 'row' }}
+            align="stretch"
+            gap={{ base: 1, md: 4, lg: 6 }}
+            justify="stretch"
+            w="full"
+          >
+            <Box flex={1}>
+              <Text textStyle="prompt" flex={1}>
+                Click on the categories you want to be quizzed on.
+              </Text>
+            </Box>
+
             <Box>
-              <Button normal h="auto" lineHeight="relaxed">
-                <Text>Pick All</Text>
-              </Button>
+              <Flex gap={3}>
+                <Button normal onClick={state.acts.pickAll}>
+                  <Text>Pick All</Text>
+                </Button>
+                <Button onClick={state.acts.clearAll} normal>
+                  Clear
+                </Button>
+              </Flex>
             </Box>
           </Flex>
         </Prompt>
-        <CatGrid cats={cats} />
-        <Flex align="center" w="100R" direction="column">
+        <CatGrid cats={cats} state={state} chosen={chosen} />
+      </Box>
+      <Box layerStyle="floatingFooter">
+        <Flex align="center" w="100%" direction={'column'}>
           <Button
             as={Link}
             // @ts-ignore
             display
+            disabled={!chosen.size}
           >
-            <Text
-              textStyle="buttonDisplay"
-              color="textAccent"
-              style={{
-                textShadow: '3px 4px rgba(0,0,0,0.5)',
-              }}
-            >
-              Save My Categories
-            </Text>
+            {state.acts.saveButtonPrompt()}
           </Button>
         </Flex>
       </Box>

@@ -24,15 +24,7 @@ export default function Home() {
         </Box>
         <Flex align="center" w="100R" direction="column">
           <Button as={Link} to="/cats" display>
-            <Text
-              textStyle="buttonDisplay"
-              color="textAccent"
-              style={{
-                textShadow: '3px 4px rgba(0,0,0,0.5)',
-              }}
-            >
-              Let's play a game!
-            </Text>
+            Let's play a game!
           </Button>
         </Flex>
       </Box>

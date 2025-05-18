@@ -5,7 +5,7 @@ import { CatAvatar } from '../../components/CatAvatar';
 console.log('updated file');
 
 export default function AdminCats() {
-  const state = useCatState();
+  const [state] = useCatState();
 
   return (
     <Box layerStyle="page">

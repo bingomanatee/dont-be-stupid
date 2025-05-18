@@ -40,9 +40,43 @@ export function makeSpacing(root: string, size: number) {
   );
 }
 
+const CATEGORY_TILE = {
+  position: 'relative',
+  overflow: 'hidden',
+  borderRadius: 'xl',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-end',
+  height: '100%',
+  padding: 0,
+  borderWidth: 2,
+  boxSizing: 'border-box',
+  borderColor: 'transparent',
+};
+
+const CATEGORY_TILE_IMAGE = {
+  position: 'absolute',
+  inset: 0,
+  bgSize: 'cover',
+  bgPosition: 'center',
+};
+const CASTEGORY_TEXT = {
+  mt: 1,
+  fontSize: 'xl',
+  lineClamp: 1,
+  fontFamily: 'Oswald',
+  textAlign: 'center',
+  color: 'theme.900',
+};
+
 const config = defineConfig({
   theme: {
     layerStyles: defineLayerStyles({
+      container: {
+        value: {
+          mb: 12,
+        },
+      },
       prompt: {
         value: {
           my: responsive('promptMy'),
@@ -56,30 +90,19 @@ const config = defineConfig({
         },
       },
       categoryTile: {
+        value: CATEGORY_TILE,
+      },
+      categoryTileChosen: {
         value: {
-          position: 'relative',
-          overflow: 'hidden',
-          borderRadius: 'md',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          height: '100%',
-          padding: 0,
-          _hover: {
-            '.categoryTileImage': {
-              opacity: 0,
-            },
-          },
+          ...CATEGORY_TILE,
+          borderColor: 'interface.800',
         },
       },
       categoryTileImage: {
-        value: {
-          position: 'absolute',
-          inset: 0,
-          bgSize: 'cover',
-          bgPosition: 'center',
-          transition: 'opacity 0.3s ease',
-        },
+        value: CATEGORY_TILE_IMAGE,
+      },
+      categoryTileImageChosen: {
+        value: { ...CATEGORY_TILE_IMAGE, backdropFilter: 'blur(20px)' },
       },
       categoryTileOverlay: {
         value: {
@@ -91,17 +114,27 @@ const config = defineConfig({
           zIndex: 1,
         },
       },
+      catGridContainer: {
+        px: '20px',
+      },
       categoryTileContent: {
         value: {
           position: 'relative',
           zIndex: 2,
           textAlign: 'center',
           px: 2,
-          pt: { base: 16, lg: 20, xl: 24 },
+          pt: { base: 2, md: 4, lg: 10, xl: 16 },
           pb: 2,
         },
       },
-
+      floatingFooter: {
+        value: {
+          position: 'absolute',
+          width: 'full',
+          zIndex: 1000,
+          bottom: 0,
+        },
+      },
       listFrame: {
         value: {
           borderWidth: '1px',
@@ -370,15 +403,11 @@ const config = defineConfig({
           fontFamily: 'Oswald, "Helvetica Narrow", sans-serif',
         },
       },
-      categoryButtonUnselected: {
-        value: {
-          mt: 1,
-          fontSize: { base: 'md', lg: 'lg' },
-          lineClamp: 1,
-          fontFamily: 'Oswald',
-          textAlign: 'center',
-          color: 'theme.900',
-        },
+      categoryButton: {
+        value: CASTEGORY_TEXT,
+      },
+      categoryButtonSelected: {
+        value: { ...CASTEGORY_TEXT, color: 'yellow' },
       },
       iconicText: {
         value: {
@@ -460,17 +489,22 @@ const config = defineConfig({
           textTransform: 'uppercase',
           lineHeight: 'relaxed',
           fontSize: responsive('lg'),
+          fontWeight: 400,
         },
         variants: {
           normal: {
             true: {
-              h: '200px',
-              px: 4,
-              py: 1,
+              h: 'auto',
+              px: 6,
+              py: 2,
               flex: 0,
+              minWidth: '10rem',
               bgColor: 'theme.700',
               lineHeight: 'relaxed',
               textTransform: 'uppercase',
+              _hover: {
+                bg: 'theme.800',
+              },
             },
           },
           admin: {
@@ -505,9 +539,10 @@ const config = defineConfig({
               my: '2',
               lineHeight: 'relaxed',
               color: 'textAccent',
-              fontSize: '2xl',
+              fontSize: responsive('lg'),
+              fontWeight: 600,
               _hover: {
-                bg: 'theme.200',
+                bg: 'theme.500',
               },
               _active: {
                 transform: 'translateY(2px)',
@@ -517,6 +552,15 @@ const config = defineConfig({
                 transform: 'translateY(2px)',
               },
               transition: 'none',
+              _disabled: {
+                bg: 'gray.400',
+                color: 'gray.700!important',
+                opacity: 1,
+                _hover: {
+                  bg: 'gray.400',
+                  color: 'gray.700!important',
+                },
+              },
             },
           },
         },
