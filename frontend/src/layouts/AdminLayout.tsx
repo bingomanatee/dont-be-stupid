@@ -1,20 +1,21 @@
-import { NavigationMenu } from '@radix-ui/react-navigation-menu';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
+import { Box, Text } from '@chakra-ui/react';
+import { LiaBrainSolid } from 'react-icons/lia';
 
 export default function AdminLayout() {
-    return (
-        <div className="flex h-screen flex-col">
-            <header className="border-b p-4">Admin Panel</header>
-
-            <div className="flex flex-1">
-                <nav className="w-64 border-r p-4">
-                    <NavigationMenu>
-                    </NavigationMenu>
-                </nav>
-                <main className="flex-1 p-6 overflow-y-auto">
-                    <Outlet />
-                </main>
-            </div>
-        </div>
-    );
+  return (
+    <Box layerStyle="pageContainerAdmin">
+      <Outlet />
+      <Box layerStyle="adminIcon" id="adminIcon">
+        <Link to="/">
+          <span style={{ fontSize: '2rem', color: 'pink' }}>
+            <LiaBrainSolid />
+          </span>
+          <Text textStyle="iconicText" color="gray.500">
+            Quiz
+          </Text>
+        </Link>
+      </Box>
+    </Box>
+  );
 }

@@ -1,7 +1,8 @@
 import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
-export default function Home() {
+export default function Categories() {
+  // @ts-ignore
   return (
     <Box layerStyle="page" id="homepage">
       <Box
@@ -12,18 +13,14 @@ export default function Home() {
       >
         <Heading textStyle="displayHead">Don’t Be Stupid</Heading>
         <Box layerStyle="heroText">
-          <Text textStyle="display">
-            <span className="keep-together">
-              The party trivia game that takes&nbsp;
-            </span>
-            <span className="keep-together">EVERYTHING YOU HAVE</span>
-            <br />
-            <span className="keep-together">for guessing the&nbsp;</span>
-            <span className="keep-together">DUMBEST ANSWER </span>
-          </Text>
+          <Text textStyle="display">Categories To Come</Text>
         </Box>
         <Flex align="center" w="100R" direction="column">
-          <Button as={Link} to="/cats" display>
+          <Button
+            as={Link}
+            // @ts-ignore
+            display
+          >
             <Text
               textStyle="buttonDisplay"
               color="textAccent"
@@ -31,7 +28,7 @@ export default function Home() {
                 textShadow: '3px 4px rgba(0,0,0,0.5)',
               }}
             >
-              Let's play a game!
+              Choose These Categories
             </Text>
           </Button>
         </Flex>
