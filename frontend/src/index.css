@@ -13,3 +13,7 @@ body, html, #root {
   white-space: nowrap;
   display:  inline-block;
 }
+
+.categoryTileImage:hover {
+  filter: blur(20);
+}

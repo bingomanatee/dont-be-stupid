@@ -72,8 +72,15 @@ const CASTEGORY_TEXT = {
 const config = defineConfig({
   theme: {
     layerStyles: defineLayerStyles({
+      adminFormRow: {
+        value: {
+          my: 4,
+          maxWidth: '800px',
+        },
+      },
       container: {
         value: {
+          px: { base: 4, lg: 6, xl: 8 },
           mb: 12,
         },
       },
@@ -109,7 +116,7 @@ const config = defineConfig({
           position: 'absolute',
           inset: 0,
           bgGradient: 'to-t',
-          gradientFrom: 'blackAlpha.900',
+          gradientFrom: 'blackAlpha.400',
           gradientTo: 'transparent',
           zIndex: 1,
         },
@@ -132,7 +139,16 @@ const config = defineConfig({
           position: 'absolute',
           width: 'full',
           zIndex: 1000,
-          bottom: 0,
+          bottom: 8,
+        },
+      },
+      levelIcon: {
+        value: {
+          w: '25vw',
+          h: '30vh',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'contain',
         },
       },
       listFrame: {
@@ -169,11 +185,13 @@ const config = defineConfig({
         value: {
           bg: 'gray.50',
           display: 'flex',
-          maxWidth: '50rem',
+          flex: '1 1 300px',
+          maxWidth: '100rem',
           flexDirection: 'column',
           justifyContent: 'stretch',
           borderWidth: '1px',
           borderColor: 'gray.400',
+          minHeight: '50vh',
         },
       },
       adminPanelBody: {
@@ -201,7 +219,7 @@ const config = defineConfig({
       },
       page: {
         value: {
-          py: { base: 4, md: 5, lg: 6, xl: 7 },
+          py: { sm: 2, md: 3, lg: 4, xl: 5 },
           overflowY: 'auto',
           height: '100%',
         },
@@ -244,6 +262,7 @@ const config = defineConfig({
       },
       panelContainer: {
         value: {
+          mt: 8,
           mx: {
             base: 'pageMargin_sm',
             m: 'pageMargin',
@@ -389,6 +408,13 @@ const config = defineConfig({
     },
 
     textStyles: {
+      adminFormLabel: {
+        value: {
+          fontFamily: '"Playfair Display", Georgia, sans-serif',
+          fontSize: responsive('md'),
+          color: 'blackAlpha.800',
+        },
+      },
       adminListItem: {
         value: {
           fontSize: responsive('md'),
@@ -453,6 +479,7 @@ const config = defineConfig({
           },
           fontFamily: 'Alfa Slab One',
           lineHeight: 'normal',
+          textTransform: 'uppercase',
         },
       },
       display: {
@@ -478,7 +505,7 @@ const config = defineConfig({
     recipes: {
       button: defineRecipe({
         base: {
-          flex: 0,
+          flex: '0 0 auto',
           h: 'auto',
           bg: 'blue',
           rounded: 'full',
@@ -497,7 +524,7 @@ const config = defineConfig({
               h: 'auto',
               px: 6,
               py: 2,
-              flex: 0,
+              flex: '0 0 auto',
               minWidth: '10rem',
               bgColor: 'theme.700',
               lineHeight: 'relaxed',
@@ -521,6 +548,7 @@ const config = defineConfig({
               rounded: 'md',
               mx: 'lg',
               px: 5,
+              flex: '0 0 auto',
               py: 3,
               _hover: {
                 bg: 'button.hover',

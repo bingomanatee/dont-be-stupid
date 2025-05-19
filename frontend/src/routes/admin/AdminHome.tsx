@@ -12,21 +12,25 @@ export default function AdminHome() {
           <Box layerStyle="panelContainer" id="panel-container">
             <Flex
               id="panels"
-              align="stretch"
-              direction="column"
-              justify="stretch"
+              align="center"
+              direction="row"
+              justify="center"
+              gap={2}
+              w="100%"
             >
-              <AdminPanel id="cat-panel" title="Cats">
+              <AdminPanel id="cat-panel" title="Categories">
                 <Button as={Link} to="/admin/cats" admin>
-                  Edit
+                  View Categories
+                </Button>
+              </AdminPanel>
+              <AdminPanel id="cat-panel" title="Questions">
+                <Button as={Link} to="/admin/quests" admin>
+                  View Questions
                 </Button>
               </AdminPanel>
             </Flex>
           </Box>
         </Box>
-        <Flex align="center" w="100%" direction="column">
-          <Button as={Link} display></Button>
-        </Flex>
       </Box>
     </Box>
   );

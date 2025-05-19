@@ -20,7 +20,7 @@ describe('cats', () => {
       if (!state) throw new Error('aw.');
       expect(state.value.cats).toEqual([]);
       await state.acts.load();
-      expect((state.value as StateValue).cats.length).toBe(24);
+      expect((state.value as Cat).cats.length).toBe(24);
     });
   });
 

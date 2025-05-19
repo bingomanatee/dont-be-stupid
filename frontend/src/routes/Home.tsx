@@ -4,12 +4,7 @@ import { Link } from 'react-router-dom';
 export default function Home() {
   return (
     <Box layerStyle="page" id="homepage">
-      <Box
-        layerStyle="container"
-        w="100%"
-        direction="column"
-        justifyContent="center"
-      >
+      <Box layerStyle="container">
         <Heading textStyle="displayHead">Don’t Be Stupid</Heading>
         <Box layerStyle="heroText">
           <Text textStyle="display">

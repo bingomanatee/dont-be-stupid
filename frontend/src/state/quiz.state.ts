@@ -1,6 +1,7 @@
 import { ObjectCollection } from '@wonderlandlabs/forestry';
 import { useEffect, useRef, useState } from 'react';
 import type { StateValue } from './cats.state';
+import { isLevel, type Level } from './level.state';
 
 type StateFactoryProps = {
   fetch?: (url: string, options?: Record<string, any>) => Promise<any>;
@@ -16,6 +17,7 @@ export type StateValue = (typeof STATE)[keyof typeof STATE];
 export type QuizStateValue = {
   chosenCats: Set<string>; // chosen ids
   status: StateValue;
+  level: Level;
 };
 
 export const stateFactory = ({ fetch }: StateFactoryProps) => {
@@ -40,8 +42,9 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
         if (!(typeof window === 'object' && window.sessionStorage)) {
           return null;
         }
+
         const chosenCats = window.sessionStorage.getItem('chosenCats');
-        if (chosenCats)
+        if (chosenCats) {
           try {
             const catItems = JSON.parse(chosenCats);
             this.update((value: StateValue, seed: string[]) => {
@@ -50,8 +53,17 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
           } catch (err) {
             console.error('cannot parse cats', err);
           }
+        }
+
+        this.set('level', Number(window.sessionStorage.getItem('level') ?? -1));
+
         return this.subscribe((value: QuizStateValue) => {
           const cats = Array.from(value.chosenCats.values());
+          const level = this.get('level');
+          if (isLevel(level)) {
+            window.sessionStorage.setItem('level', `${level}`);
+          }
+
           try {
             window.sessionStorage.setItem('chosenCats', JSON.stringify(cats));
           } catch (err) {
@@ -76,7 +88,7 @@ let sessionSub;
 export default function getQuizState() {
   if (!quizState) {
     quizState = stateFactory({});
-    sessionStorage = quizState.acts.init();
+    sessionSub = quizState.acts.init();
   }
   return quizState;
 }
@@ -93,7 +105,6 @@ export function useQuizState() {
 
   useEffect(() => {
     const sub = state.current?.subscribe((v) => {
-      console.log('updating ', v);
       setValue(v);
     });
 

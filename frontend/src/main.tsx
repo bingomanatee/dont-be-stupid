@@ -11,6 +11,8 @@ import { system } from './theme';
 import Cats from './routes/Cats';
 import AdminHome from './routes/admin/AdminHome';
 import AdminCats from './routes/admin/AdminCats';
+import Levels from './routes/Levels';
+import AdminQuests from './routes/admin/AdminQuests';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +24,10 @@ const router = createBrowserRouter([
         path: 'cats',
         element: <Cats />,
       },
+      {
+        path: 'levels',
+        element: <Levels />,
+      },
     ],
   },
   {
@@ -32,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: 'cats',
         element: <AdminCats />,
+      },
+      {
+        path: 'quests',
+        element: <AdminQuests />,
       },
       { path: 'questions', element: <AdminQuestions /> },
     ],

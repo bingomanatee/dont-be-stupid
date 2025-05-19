@@ -4,3 +4,12 @@ export type Category = {
   imageUrl?: string;
   photographer?: string;
 };
+
+export type Question = {
+  question: string;
+  id: string;
+  questions: string[];
+  correctAnswer: number;
+  cat: string;
+  stupidAnswers: number[];
+};

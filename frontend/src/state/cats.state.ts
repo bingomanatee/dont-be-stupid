@@ -8,10 +8,6 @@ type StateFactoryProps = {
   fetch?: (url: string, options?: Record<string, any>) => Promise<any>;
 };
 
-export type StateValue = {
-  chosen: Set<string>;
-  cats: Category[];
-};
 export const stateFactory = ({ fetch }: StateFactoryProps) => {
   if (!fetch && typeof window !== 'undefined') {
     fetch = async (url, params) => {
@@ -78,14 +74,20 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
       async init() {
         const cats = await fetch!('/api/cats/init');
         this.set('cats', cats);
+      },
+      loadGlobalState() {
         const { value } = getQuizState() as { value: QuizStateValue };
+        console.log('-------- global cats:', value.chosenCats);
         if (value.chosenCats.size) {
-          this.set('chosenCats', new Set(value.chosenCats.values()));
+          this.set('chosen', new Set(value.chosenCats.values()));
         }
       },
       saveChoices() {
+        console.log('saving choices');
         const quizState = getQuizState();
-        quizState.set('chosenCats', Array.from(this.get('chosen')?.values()));
+        const catIds = Array.from(this.get('chosen')?.values());
+        console.log('sending catIds to quizState', catIds);
+        quizState.set('chosenCats', catIds);
       },
       async load() {
         const cats = await fetch!('/api/cats');
@@ -94,6 +96,7 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
     },
   );
 
+  state.acts.loadGlobalState();
   return state;
 };
 

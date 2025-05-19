@@ -1,7 +1,8 @@
 import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CatGrid } from '../components/CatGrid';
 import { useCatState } from '../state/cats.state';
+import { useCallback } from 'react';
 
 export function Prompt({ children }) {
   return (
@@ -14,6 +15,13 @@ export function Prompt({ children }) {
 export default function Cats() {
   const [state, cats, chosen] = useCatState();
   // @ts-ignore
+  const navigate = useNavigate();
+  const saveAndContinue = useCallback(() => {
+    console.log('save and continue');
+    state.acts.saveChoices();
+    navigate('/levels');
+  }, [state]);
+
   return (
     <Box layerStyle="page" id="homepage">
       <Box
@@ -22,7 +30,7 @@ export default function Cats() {
         direction="column"
         justifyContent="center"
       >
-        <Heading textStyle="displayHead">Don’t Be Stupid</Heading>
+        <Heading textStyle="displayHeadSub">Don’t Be Stupid</Heading>
         <Prompt>
           <Flex
             direction={{ base: 'column', lg: 'row' }}
@@ -53,11 +61,9 @@ export default function Cats() {
       </Box>
       <Box layerStyle="floatingFooter">
         <Flex align="center" w="100%" direction={'column'}>
-          <Button
-            as={Link}
-            // @ts-ignore
+          <Button // @ts-ignore
             display
-            onClick={state.acts.saveChoices}
+            onClick={saveAndContinue}
             disabled={!chosen.size}
           >
             {state.acts.saveButtonPrompt()}
