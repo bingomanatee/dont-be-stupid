@@ -18,6 +18,7 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
 
   type QuestStateValue = {
     quests: Question[];
+    pendingGenerations: Record<string, any>[];
     difficulty: number;
     count: number;
     catName: string;
@@ -29,6 +30,7 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
       initial: {
         quests: [],
         difficulty: 5,
+        pendingGenerations: [],
         count: 4,
         catName: '',
       },
@@ -59,10 +61,16 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
         this.set('quests', []);
       },
       async generate() {
-        const { catName, difficulty, count } = this.value;
+        const { catName, difficulty, count, pendingGenerations } = this.value;
         const body = { catName, difficulty, count };
-
-        const result = await fetch!(
+        if (
+          pendingGenerations.find(
+            (r) => r.difficulty === difficulty && r.catName === catName,
+          )
+        )
+          return;
+        this.set('pendingGenerations', [...pendingGenerations, body]);
+        const results = await fetch!(
           '/api/quest/generate',
           {
             method: 'POST',
@@ -73,8 +81,12 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
           },
           body,
         );
-
-        console.log('result:', result);
+        const withoutBody = this.get('pendingGenerations').filter(
+          (f) => !(f.catName === catName && f.difficulty === difficulty),
+        );
+        this.set('pendingGenerations', withoutBody);
+        console.log('re-fetching ', this.value.catName);
+        this.acts.loadByName(this.value.catName);
       },
 
       async load(cat: string) {
@@ -93,6 +105,27 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
         );
 
         console.log('fetched', results);
+        if (results?.items) {
+          this.set('quests', results.items);
+        }
+      },
+      async loadByName(catName: string) {
+        const { difficulty, count } = this.value;
+        const body = { catName, difficulty, count, limit: 20 };
+        const results = await fetch!(
+          '/api/quest/query',
+          {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+          body,
+        );
+
+        console.log('loadByName', catName, 'got', results);
+
         if (results?.items) {
           this.set('quests', results.items);
         }

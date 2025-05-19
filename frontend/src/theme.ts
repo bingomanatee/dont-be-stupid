@@ -8,7 +8,7 @@ import {
   defineRecipe,
 } from '@chakra-ui/react';
 
-const sizer = { sm: 0.9, lg: 1.2, xl: 1.5 };
+const sizer = { sm: 0.9, lg: 1.125, xl: 1.25 };
 
 export function makeFontSizes(root: string, size: number) {
   return Object.keys(sizer).reduce(
@@ -78,97 +78,6 @@ const config = defineConfig({
           maxWidth: '800px',
         },
       },
-      container: {
-        value: {
-          px: { base: 4, lg: 6, xl: 8 },
-          mb: 12,
-        },
-      },
-      prompt: {
-        value: {
-          my: responsive('promptMy'),
-          mx: responsive('promptMx'),
-          bgColor: 'prompt',
-          px: responsive('promptPx'),
-          py: responsive('promptPy'),
-          display: 'flex',
-          alignItems: 'baseline',
-          justifyContent: 'center',
-        },
-      },
-      categoryTile: {
-        value: CATEGORY_TILE,
-      },
-      categoryTileChosen: {
-        value: {
-          ...CATEGORY_TILE,
-          borderColor: 'interface.800',
-        },
-      },
-      categoryTileImage: {
-        value: CATEGORY_TILE_IMAGE,
-      },
-      categoryTileImageChosen: {
-        value: { ...CATEGORY_TILE_IMAGE, backdropFilter: 'blur(20px)' },
-      },
-      categoryTileOverlay: {
-        value: {
-          position: 'absolute',
-          inset: 0,
-          bgGradient: 'to-t',
-          gradientFrom: 'blackAlpha.400',
-          gradientTo: 'transparent',
-          zIndex: 1,
-        },
-      },
-      catGridContainer: {
-        px: '20px',
-      },
-      categoryTileContent: {
-        value: {
-          position: 'relative',
-          zIndex: 2,
-          textAlign: 'center',
-          px: 2,
-          pt: { base: 2, md: 4, lg: 10, xl: 16 },
-          pb: 2,
-        },
-      },
-      floatingFooter: {
-        value: {
-          position: 'absolute',
-          width: 'full',
-          zIndex: 1000,
-          bottom: 8,
-        },
-      },
-      levelIcon: {
-        value: {
-          w: '25vw',
-          h: '30vh',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'contain',
-        },
-      },
-      listFrame: {
-        value: {
-          borderWidth: '1px',
-          borderColor: 'Gray.400',
-          px: 4,
-          py: 3,
-          my: 6,
-        },
-      },
-      listItem: {
-        value: {
-          py: 2,
-          px: 3,
-          _hover: {
-            bg: 'interface.900',
-          },
-        },
-      },
       adminIcon: {
         value: {
           position: 'absolute',
@@ -211,10 +120,89 @@ const config = defineConfig({
           flexAlign: 'center',
         },
       },
+      catGridContainer: {
+        px: '20px',
+      },
+      categoryTile: {
+        value: CATEGORY_TILE,
+      },
+      categoryTileChosen: {
+        value: {
+          ...CATEGORY_TILE,
+          borderColor: 'interface.800',
+        },
+      },
+      categoryTileContent: {
+        value: {
+          position: 'relative',
+          zIndex: 2,
+          textAlign: 'center',
+          px: 2,
+          pt: { base: 2, md: 4, lg: 10, xl: 16 },
+          pb: 2,
+        },
+      },
+      categoryTileImage: {
+        value: CATEGORY_TILE_IMAGE,
+      },
+      categoryTileImageChosen: {
+        value: { ...CATEGORY_TILE_IMAGE, backdropFilter: 'blur(20px)' },
+      },
+      categoryTileOverlay: {
+        value: {
+          position: 'absolute',
+          inset: 0,
+          bgGradient: 'to-t',
+          gradientFrom: 'blackAlpha.400',
+          gradientTo: 'transparent',
+          zIndex: 1,
+        },
+      },
+      container: {
+        value: {
+          px: { base: 4, lg: 6, xl: 8 },
+          mb: 12,
+        },
+      },
+      floatingFooter: {
+        value: {
+          position: 'absolute',
+          width: 'full',
+          zIndex: 1000,
+          bottom: 8,
+        },
+      },
       heroText: {
         value: {
           my: '4rem',
           py: '2rem',
+        },
+      },
+      levelIcon: {
+        value: {
+          w: '25vw',
+          h: '30vh',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'contain',
+        },
+      },
+      listFrame: {
+        value: {
+          borderWidth: '1px',
+          borderColor: 'Gray.400',
+          px: 4,
+          py: 3,
+          my: 6,
+        },
+      },
+      listItem: {
+        value: {
+          py: 2,
+          px: 3,
+          _hover: {
+            bg: 'interface.900',
+          },
         },
       },
       page: {
@@ -269,6 +257,38 @@ const config = defineConfig({
             l: 'pageMargin_l',
             xl: 'pageMargin_xl',
           },
+        },
+      },
+      prompt: {
+        value: {
+          my: responsive('promptMy'),
+          mx: responsive('promptMx'),
+          bgColor: 'prompt',
+          px: responsive('promptPx'),
+          py: responsive('promptPy'),
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'center',
+        },
+      },
+      questionListDiff: {
+        value: {
+          position: 'absolute',
+          bottom: 2,
+          right: 4,
+          width: '33%',
+        },
+      },
+      questionListItem: {
+        value: {
+          borderWidth: 1,
+          borderColor: 'blackAlpha.300',
+          px: { base: 4, lg: 5, xl: 6 },
+          py: { base: 2, lg: 3, xl: 4 },
+          maxWidth: '800px',
+          mb: 4,
+          width: '100%',
+          position: 'relative',
         },
       },
     }),
@@ -413,6 +433,14 @@ const config = defineConfig({
           fontFamily: '"IBM Plex Serif", Georgia, sans-serif',
           fontSize: responsive('sm'),
           color: 'blackAlpha.600',
+        },
+      },
+      questionListDiff: {
+        value: {
+          fontFamily: '"IBM Plex Serif", Georgia, sans-serif',
+          fontSize: 'xs',
+          color: 'black',
+          textAlign: 'right',
         },
       },
       questionListQuestion: {

@@ -8,41 +8,29 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useQuestState } from '../../state/quests.state';
-import type { Question } from '../../types';
 import { RangeSlider } from '../../components/RangeSlider';
 import { useCatState } from '../../state/cats.state';
 import { useEffect } from 'react';
-
-function QuestSummary({ quest }: { quest: Question }) {
-  console.log('question:', quest);
-  return (
-    <List.Item>
-      <Box layerStyle="questionListItem">
-        <Text textStyle="questionListId">id: {quest._id}</Text>
-        <Text textStyle="questionListQuestion">
-          &quot;{quest.question}&quot;
-        </Text>
-      </Box>
-    </List.Item>
-  );
-}
+import { QuestSummary } from './QuestSummary';
 
 export default function AdminQuests() {
   const [state, quests, value] = useQuestState();
-  const [_catState, cats] = useCatState();
+  const [catState, cats] = useCatState();
 
   useEffect(() => {
+    if (!cats.length) return catState.load;
+    console.log('looking for questions about', value.catName, 'in', cats);
     if (state.value.catName) {
       const match = cats.find(
-        (c) => c.name.toLowerCase() === state.value.catName,
+        (c) => c.name.toLowerCase() === state.value.catName.toLowerCase(),
       );
       if (match) {
-        state.cats.load(match.id);
+        state.acts.load(match.id);
         return;
       }
     }
     state.acts.load('');
-  }, [value.difficulty, value.catName]);
+  }, [value.difficulty, value.catName, cats]);
 
   console.log('quests:', quests);
   return (
@@ -110,7 +98,11 @@ export default function AdminQuests() {
               >
                 Seed Questions
               </Button>
-              <Button onClick={state.acts.generate} admin>
+              <Button
+                onClick={state.acts.generate}
+                admin
+                disabled={value.pendingGenerations.length}
+              >
                 Generate
               </Button>
             </Flex>
