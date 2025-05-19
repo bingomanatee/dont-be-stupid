@@ -4,19 +4,19 @@ import type { Question } from '../types';
 import getQuizState, { type QuizStateValue } from './quiz.state';
 
 type StateFactoryProps = {
-  fetch?: (url: string, options?: Record<string, any>) => Promise<any>;
+  fetch?: (url: string, ...options: any[]) => Promise<any>;
 };
 
 export const stateFactory = ({ fetch }: StateFactoryProps) => {
   if (!fetch && typeof window !== 'undefined') {
-    fetch = async (url, params) => {
-      const res = await window.fetch(url, params);
+    fetch = async (url, ...params) => {
+      const res = await window.fetch(url, ...params);
       const json = await res.json();
       return json;
     };
   }
 
-  type QuestSateValue = {
+  type QuestStateValue = {
     quests: Question[];
     difficulty: number;
     count: number;
@@ -34,6 +34,19 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
       },
     },
     {
+      setDifficulty(e) {
+        const input = e?.target?.value;
+        if (input) this.set('difficulty', Number(input));
+      },
+      setCount(e) {
+        const input = e?.target?.value;
+        if (input) this.set('count', Number(input));
+      },
+      setCat(e) {
+        const input = e?.target?.value;
+        console.log('setting catName:', input);
+        this.set('catName', input);
+      },
       pick(id: string) {
         if (!id) return;
         const chosen = new Set(this.get('chosen').values());
@@ -44,6 +57,44 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
       saveButtonPrompt(): string {},
       clearAll() {
         this.set('quests', []);
+      },
+      async generate() {
+        const { catName, difficulty, count } = this.value;
+        console.log('generating for', catName, difficulty, count);
+        const body = { catName, difficulty, count };
+        console.log('------ body is -------', body, 'from ', { ...this.value });
+        await fetch!(
+          '/api/quest/generate',
+          {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+          body,
+        );
+      },
+
+      async load(cat: string) {
+        const { difficulty, count } = this.value;
+        const body = { cat, difficulty, count, limit: 20 };
+        const results = await fetch!(
+          '/api/quests/query',
+          {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+          body,
+        );
+
+        console.log('fetched', results);
+        if (results?.items) {
+          this.set('quests', results.items);
+        }
       },
 
       loadGlobalState() {
@@ -63,12 +114,13 @@ export function useQuestState() {
   const [value, setValue] = useState(state.current.value);
 
   useEffect(() => {
-    const sub = state.current?.subscribe((v) => {
-      setValue(v);
+    const sub = state.current?.observe((v) => {
+      console.log('......state value is ', { ...v });
+      setValue({ ...v });
     });
     // state.current?.acts.load();
     return () => sub?.unsubscribe();
   }, []);
 
-  return [state.current, value.quests];
+  return [state.current, value.quests, value];
 }

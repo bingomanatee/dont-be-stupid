@@ -108,7 +108,7 @@ export function useCatState() {
 
   useEffect(() => {
     console.log('loading from ', state.current);
-    const sub = state.current?.subscribe((v) => {
+    const sub = state.current?.observe((v) => {
       console.log('updating ', v);
       setValue(v);
     });

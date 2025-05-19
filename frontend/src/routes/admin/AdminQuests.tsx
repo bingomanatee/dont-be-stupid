@@ -11,6 +11,7 @@ import { useQuestState } from '../../state/quests.state';
 import type { Question } from '../../types';
 import { RangeSlider } from '../../components/RangeSlider';
 import { useCatState } from '../../state/cats.state';
+import { useEffect } from 'react';
 
 function QuestSummary({ quest }: { quest: Question }) {
   return (
@@ -22,33 +23,27 @@ function QuestSummary({ quest }: { quest: Question }) {
 }
 
 export default function AdminQuests() {
-  const [state, quests] = useQuestState();
+  const [state, quests, value] = useQuestState();
   const [_catState, cats] = useCatState();
+
+  useEffect(() => {
+    state.acts.load();
+  }, [value.difficulty, value.catName]);
+
   return (
     <Box layerStyle="page">
       <Box layerStyle="pageInner">
         <Heading textStyle="displayHeadSub">Don't Be Stupid: Manager</Heading>
         <Heading textStyle="displayHead">Questions</Heading>
         <Box layerStyle="pageContent">
-          <Flex
-            gap={8}
-            w="100%"
-            direction="row"
-            justify="center"
-            align="stretch"
-          >
-            <Button onClick={state.acts.init} admin>
-              Seed Questions
-            </Button>
-            <Button onClick={state.acts.generate} admin>
-              Generate
-            </Button>
-          </Flex>
           <Box layerStyle="adminForm">
             <Flex gap={8} layerStyle="adminFormRow">
               <Text textStyle="adminFormLabel">Category</Text>
               <NativeSelect.Root>
-                <NativeSelect.Field>
+                <NativeSelect.Field onChange={state.acts.setCat}>
+                  <option unselectable value="">
+                    SELECT
+                  </option>
                   {cats.map((c) => (
                     <option value={c.name} key={c.id}>
                       {c.name}
@@ -63,11 +58,13 @@ export default function AdminQuests() {
               <Box minWidth="400px" flexGrow={1}>
                 <RangeSlider
                   min={1}
-                  max={1}
+                  max={10}
+                  defaultValue={[5]}
                   step={1}
                   marks={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
                   onChange={state.acts.setDifficulty}
                 />
+                <Text>{state.value.difficulty}</Text>
               </Box>
             </Flex>
             <Flex gap={8} layerStyle="adminFormRow">
@@ -77,10 +74,30 @@ export default function AdminQuests() {
                   min={4}
                   max={20}
                   step={4}
+                  defaultValue={[4]}
                   marks={[4, 8, 12, 16, 20]}
                   onChange={state.acts.setCount}
                 />
+                <Text>{state.value.count}</Text>
               </Box>
+            </Flex>
+            <Flex
+              gap={8}
+              w="100%"
+              direction="row"
+              justify="center"
+              align="stretch"
+            >
+              <Button
+                style={{ display: 'none' }}
+                onClick={state.acts.init}
+                admin
+              >
+                Seed Questions
+              </Button>
+              <Button onClick={state.acts.generate} admin>
+                Generate
+              </Button>
             </Flex>
           </Box>
           <List.Root>

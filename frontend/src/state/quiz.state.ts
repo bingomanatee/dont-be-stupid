@@ -57,7 +57,7 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
 
         this.set('level', Number(window.sessionStorage.getItem('level') ?? -1));
 
-        return this.subscribe((value: QuizStateValue) => {
+        return this.observe((value: QuizStateValue) => {
           const cats = Array.from(value.chosenCats.values());
           const level = this.get('level');
           if (isLevel(level)) {
@@ -104,7 +104,7 @@ export function useQuizState() {
   const [value, setValue] = useState(state.current?.value ?? {});
 
   useEffect(() => {
-    const sub = state.current?.subscribe((v) => {
+    const sub = state.current?.observe((v) => {
       setValue(v);
     });
 
