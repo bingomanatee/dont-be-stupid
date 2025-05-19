@@ -14,11 +14,16 @@ import { useCatState } from '../../state/cats.state';
 import { useEffect } from 'react';
 
 function QuestSummary({ quest }: { quest: Question }) {
+  console.log('question:', quest);
   return (
-    <Box>
-      <Text>{quest.id}</Text>
-      <Text>{quest.question}</Text>
-    </Box>
+    <List.Item>
+      <Box layerStyle="questionListItem">
+        <Text textStyle="questionListId">id: {quest._id}</Text>
+        <Text textStyle="questionListQuestion">
+          &quot;{quest.question}&quot;
+        </Text>
+      </Box>
+    </List.Item>
   );
 }
 
@@ -27,9 +32,19 @@ export default function AdminQuests() {
   const [_catState, cats] = useCatState();
 
   useEffect(() => {
-    state.acts.load();
+    if (state.value.catName) {
+      const match = cats.find(
+        (c) => c.name.toLowerCase() === state.value.catName,
+      );
+      if (match) {
+        state.cats.load(match.id);
+        return;
+      }
+    }
+    state.acts.load('');
   }, [value.difficulty, value.catName]);
 
+  console.log('quests:', quests);
   return (
     <Box layerStyle="page">
       <Box layerStyle="pageInner">
@@ -100,9 +115,9 @@ export default function AdminQuests() {
               </Button>
             </Flex>
           </Box>
-          <List.Root>
+          <List.Root variant="plain">
             {quests.slice(0, 8).map((q) => {
-              return <QuestSummary key={q.id} quest={q} />;
+              return <QuestSummary key={q._id} quest={q} />;
             })}
           </List.Root>
         </Box>

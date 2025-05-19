@@ -60,10 +60,9 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
       },
       async generate() {
         const { catName, difficulty, count } = this.value;
-        console.log('generating for', catName, difficulty, count);
         const body = { catName, difficulty, count };
-        console.log('------ body is -------', body, 'from ', { ...this.value });
-        await fetch!(
+
+        const result = await fetch!(
           '/api/quest/generate',
           {
             method: 'POST',
@@ -74,13 +73,15 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
           },
           body,
         );
+
+        console.log('result:', result);
       },
 
       async load(cat: string) {
         const { difficulty, count } = this.value;
         const body = { cat, difficulty, count, limit: 20 };
         const results = await fetch!(
-          '/api/quests/query',
+          '/api/quest/query',
           {
             method: 'POST',
             body: JSON.stringify(body),

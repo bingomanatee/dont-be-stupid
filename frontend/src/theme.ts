@@ -274,7 +274,7 @@ const config = defineConfig({
     }),
     tokens: {
       fonts: {
-        heading: { value: `'Alfa Slab One', serif` },
+        heading: { value: `'Bungee', serif` },
         body: { value: `'Oswald', sans-serif` },
       },
       fontSizes: {
@@ -408,9 +408,23 @@ const config = defineConfig({
     },
 
     textStyles: {
+      questionListId: {
+        value: {
+          fontFamily: '"IBM Plex Serif", Georgia, sans-serif',
+          fontSize: responsive('sm'),
+          color: 'blackAlpha.600',
+        },
+      },
+      questionListQuestion: {
+        value: {
+          fontFamily: '"IBM Plex Serif", Georgia, sans-serif',
+          fontSize: responsive('lg'),
+          color: 'black',
+        },
+      },
       adminFormLabel: {
         value: {
-          fontFamily: '"Playfair Display", Georgia, sans-serif',
+          fontFamily: '"IBM Plex Serif", Georgia, sans-serif',
           fontSize: responsive('md'),
           color: 'blackAlpha.800',
         },
@@ -419,7 +433,7 @@ const config = defineConfig({
         value: {
           fontSize: responsive('md'),
           fontWeight: 500,
-          fontFamily: '"Playfair Display", Georgia, sans-serif',
+          fontFamily: '"IBM Plex Serif", Georgia, sans-serif',
         },
       },
       prompt: {
@@ -462,7 +476,7 @@ const config = defineConfig({
             lg: 'disp.xl_lg',
             xl: 'disp.xl_xl',
           },
-          fontFamily: 'Alfa Slab One',
+          fontFamily: 'Bungee',
           textTransform: 'uppercase',
           lineHeight: 'compact',
         },
@@ -477,7 +491,7 @@ const config = defineConfig({
             lg: 'disp.lg_lg',
             xl: 'disp.lg_xl',
           },
-          fontFamily: 'Alfa Slab One',
+          fontFamily: 'Bungee',
           lineHeight: 'normal',
           textTransform: 'uppercase',
         },
