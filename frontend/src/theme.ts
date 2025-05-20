@@ -68,6 +68,7 @@ const CASTEGORY_TEXT = {
   textAlign: 'center',
   color: 'theme.900',
 };
+const DISPLAY_FONT = 'Oswald, "Helvetica Narrow", sans-serif';
 const BODY_FONT = '"IBM Plex Serif", Georgia, sans-serif';
 const config = defineConfig({
   theme: {
@@ -361,9 +362,9 @@ const config = defineConfig({
       fontSizes: {
         ...makeFontSizes('sm', 0.9),
         ...makeFontSizes('md', 1),
-        ...makeFontSizes('lg', 1.25),
-        ...makeFontSizes('xl', 1.5),
-        ...makeFontSizes('xxl', 1.8),
+        ...makeFontSizes('lg', 1.2),
+        ...makeFontSizes('xl', 1.6),
+        ...makeFontSizes('xxl', 1.9),
         disp: {
           xl_sm: {
             value: '2.5rem',
@@ -391,6 +392,15 @@ const config = defineConfig({
         },
       },
       colors: {
+        wrongResult: {
+          value: '#FFCCCC',
+        },
+        correctResult: {
+          value: '#CCFFCC',
+        },
+        stupidResult: {
+          value: '#a30000',
+        },
         interface: {
           50: {
             value: 'hsl(36,100%,5%)',
@@ -490,6 +500,16 @@ const config = defineConfig({
     },
 
     textStyles: {
+      reportText: {
+        value: {
+          fontFamily: DISPLAY_FONT,
+          fontSize: responsive('lg'),
+          fontWeight: 400,
+          px: { base: 2, lg: 3, xl: 4 },
+          py: { base: 2, xl: 3 },
+          lineHeight: 'relaxed',
+        },
+      },
       questBannerQuestion: {
         value: {
           fontSize: responsive('xxl'),
@@ -505,6 +525,10 @@ const config = defineConfig({
           fontWeight: 600,
           lineHeight: 'compact',
         },
+      },
+
+      resultText: {
+        fontFamily: 'Oswald',
       },
       questionListId: {
         value: {

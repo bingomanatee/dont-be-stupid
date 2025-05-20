@@ -21,6 +21,18 @@ export type Answer = {
   index: number;
   answer: string;
 };
+
+export type QuizResult = {
+  id: string;
+  index: number;
+  answer: string;
+  question?: string;
+  correctAnswer?: number;
+  correctResponse?: string;
+  points: number;
+  result: 'correct' | 'wrong' | 'stupid' | 'not found';
+};
+
 export type QuizStateValue = {
   chosenCats: Set<string>; // chosen ids
   status: StateValue;
@@ -29,4 +41,5 @@ export type QuizStateValue = {
   quests: Question[];
   answers: Map<string, Answer>;
   isStupid: boolean;
+  results: QuizResult[];
 };

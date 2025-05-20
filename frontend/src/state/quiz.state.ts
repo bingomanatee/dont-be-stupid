@@ -43,6 +43,7 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
         quests: [],
         answers: new Map(),
         current: '',
+        results: [],
       },
       validator(value: QuizStateValue) {
         if (!isObj(value)) throw new Error('value is not an object');
@@ -106,9 +107,9 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
         if (!current) return null;
         return quests.find((q) => q._id === current);
       },
-      choose(id: string, index: number) {
+      choose(id: string, response: { index: number; answer: string }) {
         const answers = new Map(this.get('answers'));
-        answers.set(id, index);
+        answers.set(id, response);
         this.set('answers', answers);
         if (answers.size >= QUIZ_LENGTH) {
           return this.acts.finish();
@@ -197,12 +198,10 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
       async resolveQuiz() {
         this.set('status', STATE.EVALUATING);
         if (this.value.answers.size < QUIZ_LENGTH) {
-          console.log('bad answers:', this.value.answers);
           throw new Error('the quiz was not complete');
         }
 
         const answers = Array.from(this.value.answers.entries());
-        console.log('sending entries', answers);
         const body = JSON.stringify(answers);
         const results = await fetch(
           '/api/quiz/results',
@@ -215,6 +214,7 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
           },
           body,
         );
+        this.set('results', results);
       },
       saveToSession(props: SessionProps) {
         const { key, type, value } = props;

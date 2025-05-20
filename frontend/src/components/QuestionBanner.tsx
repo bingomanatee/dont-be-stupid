@@ -25,7 +25,7 @@ export function QuestionBanner() {
           </Text>
         </Box>
         <SimpleGrid
-          columns={[2, null, answers.length]}
+          columns={[1, 1, 1, 2, answers.length]}
           columnGap={3}
           rowGap={2}
         >
