@@ -96,14 +96,11 @@ export function useLevelState() {
   const [value, setValue] = useState(state.current.value);
 
   useEffect(() => {
-    console.log('loading from ', state.current);
     const sub = state.current?.observe((v) => {
-      console.log('updating ', v);
       setValue(v);
     });
-    console.log('state.current', state.current);
     state.current?.acts.load();
-    return () => sub?.unobserve();
+    return () => sub?.unsubscribe();
   }, []);
 
   return [state.current, value.level];

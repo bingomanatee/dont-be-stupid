@@ -68,7 +68,7 @@ const CASTEGORY_TEXT = {
   textAlign: 'center',
   color: 'theme.900',
 };
-
+const BODY_FONT = '"IBM Plex Serif", Georgia, sans-serif';
 const config = defineConfig({
   theme: {
     layerStyles: defineLayerStyles({
@@ -103,6 +103,7 @@ const config = defineConfig({
           minHeight: '50vh',
         },
       },
+
       adminPanelBody: {
         value: {
           p: 4,
@@ -118,6 +119,17 @@ const config = defineConfig({
           justifyContent: 'center',
           display: 'flex',
           flexAlign: 'center',
+        },
+      },
+      catBannerItem: {
+        value: {
+          px: { base: 1, xl: 2 },
+          py: { base: 1, xl: 2 },
+          borderColor: 'blackAlpha.200',
+          borderWidth: 1,
+          my: 2,
+          mx: 4,
+          rounded: 'full',
         },
       },
       catGridContainer: {
@@ -170,6 +182,18 @@ const config = defineConfig({
           width: 'full',
           zIndex: 1000,
           bottom: 8,
+        },
+      },
+      goBackIcon: {
+        value: {
+          position: 'absolute',
+          left: 4,
+          top: 4,
+          width: '120px',
+          height: '120px',
+          p: 2,
+          zIndex: 1000,
+          color: 'interface.500',
         },
       },
       heroText: {
@@ -271,10 +295,36 @@ const config = defineConfig({
           justifyContent: 'center',
         },
       },
+      questionBanner: {
+        value: {
+          py: { base: 4, lg: 5, max: 6 },
+          px: { base: 8, lg: 10, max: 13 },
+        },
+      },
+      questionBannerAnswer: {
+        value: {
+          borderWidth: '1px',
+          borderColor: 'white',
+          px: { base: 8, lg: 12, max: 15 },
+          py: { base: 6, lg: 8, max: 10 },
+          bgGradient: 'to-b',
+          bg: 'theme.900',
+          gradientFrom: 'theme.900',
+          gradientTo: 'theme.500',
+          _hover: {
+            bg: 'interface.900',
+          },
+        },
+      },
+      questionBannerQuestion: {
+        value: {
+          mb: 6,
+        },
+      },
       questionListDiff: {
         value: {
           position: 'absolute',
-          bottom: 2,
+          bottom: 6,
           right: 4,
           width: '33%',
         },
@@ -291,6 +341,17 @@ const config = defineConfig({
           position: 'relative',
         },
       },
+      startBanner: {
+        value: {
+          h: '100%',
+          w: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          alignContent: 'space-between',
+          flexDirection: 'column',
+        },
+      },
     }),
     tokens: {
       fonts: {
@@ -302,6 +363,7 @@ const config = defineConfig({
         ...makeFontSizes('md', 1),
         ...makeFontSizes('lg', 1.25),
         ...makeFontSizes('xl', 1.5),
+        ...makeFontSizes('xxl', 1.8),
         disp: {
           xl_sm: {
             value: '2.5rem',
@@ -428,9 +490,25 @@ const config = defineConfig({
     },
 
     textStyles: {
+      questBannerQuestion: {
+        value: {
+          fontSize: responsive('xxl'),
+          fontFamily: BODY_FONT,
+          fontWeight: 600,
+          lineHeight: 'compact',
+        },
+      },
+      questionBannerAnswer: {
+        value: {
+          fontSize: responsive('xl'),
+          fontFamily: BODY_FONT,
+          fontWeight: 600,
+          lineHeight: 'compact',
+        },
+      },
       questionListId: {
         value: {
-          fontFamily: '"IBM Plex Serif", Georgia, sans-serif',
+          fontFamily: BODY_FONT,
           fontSize: responsive('sm'),
           color: 'blackAlpha.600',
         },
@@ -467,6 +545,20 @@ const config = defineConfig({
       prompt: {
         value: {
           fontSize: responsive('lg'),
+          fontWeight: 500,
+          fontFamily: 'Oswald, "Helvetica Narrow", sans-serif',
+        },
+      },
+      promptMinor: {
+        value: {
+          fontSize: responsive('md'),
+          fontWeight: 300,
+          fontFamily: 'Oswald, "Helvetica Narrow", sans-serif',
+        },
+      },
+      catBannerItem: {
+        value: {
+          fontSize: responsive('sm'),
           fontWeight: 500,
           fontFamily: 'Oswald, "Helvetica Narrow", sans-serif',
         },

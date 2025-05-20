@@ -1,13 +1,13 @@
 import { Avatar } from '@chakra-ui/react';
 
-export function CatAvatar({ cat }) {
+export function CatAvatar({ cat, size = 'xl' }) {
   if (!cat?.imageUrl) {
     return 'no image';
   }
   return (
-    <Avatar.Root size="xl">
+    <Avatar.Root size={size}>
       <Avatar.Fallback name={cat.name ?? '??'} />
-      <Avatar.Image src={cat.imageUrl} />
+      {cat.imageUrl && <Avatar.Image src={cat.imageUrl} />}
     </Avatar.Root>
   );
 }

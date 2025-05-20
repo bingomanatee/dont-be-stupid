@@ -11,7 +11,7 @@ import { useQuestState } from '../../state/quests.state';
 import { RangeSlider } from '../../components/RangeSlider';
 import { useCatState } from '../../state/cats.state';
 import { useEffect } from 'react';
-import { QuestSummary } from './QuestSummary';
+import { QuestSummary } from '../../components/QuestSummary';
 
 export default function AdminQuests() {
   const [state, quests, value] = useQuestState();

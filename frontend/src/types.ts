@@ -12,4 +12,5 @@ export type Question = {
   correctAnswer: number;
   cat: string;
   stupidAnswers: number[];
+  difficulty: number;
 };

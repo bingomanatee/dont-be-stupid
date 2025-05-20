@@ -1,4 +1,4 @@
-import type { Question } from '../../types';
+import type { Question } from '../types';
 import { Box, List, Text } from '@chakra-ui/react';
 
 export function QuestSummary({ quest }: { quest: Question }) {

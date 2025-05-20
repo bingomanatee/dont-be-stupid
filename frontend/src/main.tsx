@@ -13,6 +13,7 @@ import AdminHome from './routes/admin/AdminHome';
 import AdminCats from './routes/admin/AdminCats';
 import Levels from './routes/Levels';
 import AdminQuests from './routes/admin/AdminQuests';
+import Quiz from './routes/Quiz';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: 'levels',
         element: <Levels />,
+      },
+      {
+        path: 'quiz',
+        element: <Quiz />,
       },
     ],
   },

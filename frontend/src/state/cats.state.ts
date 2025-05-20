@@ -77,16 +77,13 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
       },
       loadGlobalState() {
         const { value } = getQuizState() as { value: QuizStateValue };
-        console.log('-------- global cats:', value.chosenCats);
         if (value.chosenCats.size) {
           this.set('chosen', new Set(value.chosenCats.values()));
         }
       },
       saveChoices() {
-        console.log('saving choices');
         const quizState = getQuizState();
         const catIds = Array.from(this.get('chosen')?.values());
-        console.log('sending catIds to quizState', catIds);
         quizState.set('chosenCats', catIds);
       },
       async load() {

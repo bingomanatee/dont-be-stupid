@@ -1,6 +1,7 @@
 import { Link, Outlet } from 'react-router-dom';
 import { Box, Text } from '@chakra-ui/react';
 import { LiaBrainSolid } from 'react-icons/lia';
+import GoBack from '../components/GoBack';
 
 export default function QuizLayout() {
   return (
@@ -14,6 +15,10 @@ export default function QuizLayout() {
           </span>
           <Text textStyle="iconicText">Admin</Text>
         </Link>
+      </Box>
+
+      <Box layerStyle="goBackIcon" id="backIcon">
+        <GoBack size="2rem" />
       </Box>
     </Box>
   );
