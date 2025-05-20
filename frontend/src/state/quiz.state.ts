@@ -13,9 +13,16 @@ export const STATE = {
   QUIZTITLE: 'QUIZTITLE',
   QUIZ: 'QUIZ',
   QUIZ_COMPLETE: 'QUIZ_COMPLETE',
+  EVALUATING: 'EVALUATING',
   ERROR: 'ERROR',
 } as const;
 export type StateValue = (typeof STATE)[keyof typeof STATE];
+
+type SessionProps = {
+  key: string;
+  type: string;
+  value: unknown;
+};
 
 export const stateFactory = ({ fetch }: StateFactoryProps) => {
   if (!fetch && typeof window !== 'undefined') {
@@ -84,6 +91,7 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
         this.set('current', question._id);
       },
       async resetQuiz() {
+        console.log('-------- quiz reset ----------');
         this.update((v) => ({
           ...v,
           currentQuest: 0,
@@ -146,6 +154,8 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
                 const value = JSON.parse(string);
                 if (Array.isArray(value)) {
                   const map = new Map(Object.entries(value));
+                  console.log('::::::::: loaded map', map, 'from ', value);
+
                   this.set('answers', map);
                 } else {
                   console.warn('non array stored', key, value);
@@ -184,13 +194,37 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
             this.set(key, string);
         }
       },
-      saveToSession(key: string, valueType: string, value: unknown) {
-        console.log('saving', key, valueType, value);
+      async resolveQuiz() {
+        this.set('status', STATE.EVALUATING);
+        if (this.value.answers.size < QUIZ_LENGTH) {
+          console.log('bad answers:', this.value.answers);
+          throw new Error('the quiz was not complete');
+        }
+
+        const answers = Array.from(this.value.answers.entries());
+        console.log('sending entries', answers);
+        const body = JSON.stringify(answers);
+        const results = await fetch(
+          '/api/quiz/results',
+          {
+            method: 'POST',
+            body,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+          body,
+        );
+      },
+      saveToSession(props: SessionProps) {
+        const { key, type, value } = props;
+
+        console.log('saving', key, type, value);
         if (typeof value === 'undefined') {
           console.log('skipping', key);
           return;
         }
-        switch (valueType) {
+        switch (type) {
           case 'number':
           case 'string':
             window.sessionStorage.setItem(key, value);
@@ -212,7 +246,11 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
               }
               try {
                 const list = Array.from(value.values());
-                this.acts.saveToSession(key, list, 'array');
+                this.acts.saveToSession({
+                  key,
+                  value: list,
+                  type: 'array',
+                });
               } catch (err) {
                 console.error('cannot serialize set', key, value, err);
               }
@@ -225,13 +263,16 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
                 console.warn('not saving non - map', key, value);
                 return;
               }
-              const obj = Object.fromEntries(value);
+              const obj = {};
+              value.forEach((value, key) => {
+                obj[key] = value;
+              });
               console.log('saving map ', key, obj);
-              this.acts.saveToSession(key, obj, 'object');
+              this.acts.saveToSession({ key, type: 'object', value: obj });
             }
             break;
           default:
-            console.log('saving unknown type', key, valueType, value);
+            console.log('saving unknown type', key, type, value);
             window.sessionStorage.setItem(key, value);
         }
       },
@@ -247,15 +288,40 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
         this.acts.getFromSession('quests', 'array');
         this.acts.getFromSession('status', 'string');
 
+        console.log('-------- quiz loaded from session ----------');
         return this.observe((value: QuizStateValue) => {
-          console.log('observed value:', { ...value });
           const { chosenCats, level, answers, quests, status, current } = value;
-          this.acts.saveToSession('answers', 'Map', answers);
-          this.acts.saveToSession('chosenCats', 'Set', chosenCats);
-          this.acts.saveToSession('current', 'string', current);
-          this.acts.saveToSession('level', 'number', level);
-          this.acts.saveToSession('quests', 'array', quests);
-          this.acts.saveToSession('status', 'string', status);
+          this.acts.saveToSession({
+            key: 'answers',
+            type: 'Map',
+            value: answers,
+          });
+          this.acts.saveToSession({
+            key: 'chosenCats',
+            type: 'Set',
+            value: chosenCats,
+          });
+          this.acts.saveToSession({
+            key: 'current',
+            type: 'string',
+            value: current,
+          });
+          this.acts.saveToSession({
+            key: 'level',
+            type: 'number',
+            value: level,
+          });
+          this.acts.saveToSession({
+            key: 'quests',
+            type: 'array',
+            value: quests,
+          });
+          this.acts.saveToSession({
+            key: 'status',
+            type: 'string',
+            value: status,
+          });
+          console.log('-------- quiz saved to session ----------');
         });
       },
       saveCategories(ids: string[]) {

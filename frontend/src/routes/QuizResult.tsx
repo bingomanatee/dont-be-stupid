@@ -9,19 +9,13 @@ import { StartBanner } from '../components/StartBanner';
 import { QuizSteps } from '../components/QuizSteps';
 import { QuestionBanner } from '../components/QuestionBanner';
 
-export default function Quiz() {
+export default function QuizResult() {
   const [state, value] = useQuizState();
   const { status, current } = value;
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (status === STATE.QUIZ_COMPLETE) {
-      navigate('/results');
-    }
-  }, [status]);
-
-  useEffect(() => {
-    state.acts.resetQuiz();
+    state.acts.resolveQuiz();
   }, [state]);
 
   return (
@@ -33,9 +27,7 @@ export default function Quiz() {
         justifyContent="center"
       >
         <Heading textStyle="displayHeadSub">Don’t Be Stupid</Heading>
-        <CatBanner />
-        {status == STATE.QUIZTITLE ? <StartBanner /> : null}
-        {current ? <QuestionBanner /> : null}
+        <Heading textStyle="displayHead">Final Results</Heading>
       </Box>
       <Box layerStyle="floatingFooter">
         <Prompt>
