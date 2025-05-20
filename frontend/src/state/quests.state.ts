@@ -1,7 +1,7 @@
 import { ObjectCollection } from '@wonderlandlabs/forestry';
 import { useEffect, useRef, useState } from 'react';
-import type { Question } from '../types';
-import getQuizState, { type QuizStateValue } from './quiz.state';
+import type { Question, QuizStateValue } from '../types';
+import getQuizState from './quiz.state';
 
 type StateFactoryProps = {
   fetch?: (url: string, ...options: any[]) => Promise<any>;

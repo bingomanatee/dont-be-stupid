@@ -7,6 +7,7 @@ import { STATE, useQuizState } from '../state/quiz.state';
 import { CatBanner } from '../components/CatBanner';
 import { StartBanner } from '../components/StartBanner';
 import { shuffle } from 'lodash-es';
+import { QuizSteps } from '../components/QuizSteps';
 
 function QuestionBanner() {
   const [state] = useQuizState();
@@ -31,15 +32,15 @@ function QuestionBanner() {
           columnGap={3}
           rowGap={2}
         >
-          {answers.map((a) => {
+          {answers.map((answer, index) => {
             return (
               <Box
                 layerStyle="questionBannerAnswer"
                 onClick={() => {
-                  state.acts.choose(currentQuestion._id, a);
+                  state.acts.choose(currentQuestion._id, { index, answer });
                 }}
               >
-                <Text textStyle="questionBannerAnswer">{a}</Text>
+                <Text textStyle="questionBannerAnswer">{answer}</Text>
               </Box>
             );
           })}
@@ -83,9 +84,12 @@ export default function Quiz() {
       </Box>
       <Box layerStyle="floatingFooter">
         <Prompt>
-          <Text textStyle="prompt">
-            Choose an answer to continue. Do not choose a stupid answer.
-          </Text>
+          <Flex direction="column">
+            {status === STATE.QUIZ ? <QuizSteps /> : null}
+            <Text textStyle="prompt">
+              Choose an answer to continue. Do not choose a stupid answer.
+            </Text>
+          </Flex>
         </Prompt>
       </Box>
     </Box>

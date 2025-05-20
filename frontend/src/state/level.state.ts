@@ -1,7 +1,8 @@
 import { ObjectCollection } from '@wonderlandlabs/forestry';
 import { sortBy } from 'lodash-es';
 import { useEffect, useRef, useState } from 'react';
-import getQuizState, { type QuizStateValue } from './quiz.state';
+import getQuizState from './quiz.state';
+import type { QuizStateValue } from '../types';
 
 type StateFactoryProps = {
   fetch?: (url: string, options?: Record<string, any>) => Promise<any>;

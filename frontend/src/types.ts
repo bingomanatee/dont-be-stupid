@@ -1,3 +1,6 @@
+import type { Level } from './state/level.state';
+import type { StateValue } from './state/quiz.state';
+
 export type Category = {
   name: string;
   id: string;
@@ -13,4 +16,17 @@ export type Question = {
   cat: string;
   stupidAnswers: number[];
   difficulty: number;
+};
+export type Answer = {
+  index: number;
+  answer: string;
+};
+export type QuizStateValue = {
+  chosenCats: Set<string>; // chosen ids
+  status: StateValue;
+  level: Level;
+  current?: string;
+  quests: Question[];
+  answers: Map<string, Answer>;
+  isStupid: boolean;
 };
