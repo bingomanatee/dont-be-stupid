@@ -84,7 +84,7 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
       saveChoices() {
         const quizState = getQuizState();
         const catIds = Array.from(this.get('chosen')?.values());
-        quizState.set('chosenCats', catIds);
+        quizState.set('chosenCats', new Set(catIds));
       },
       async load() {
         const cats = await fetch!('/api/cats');

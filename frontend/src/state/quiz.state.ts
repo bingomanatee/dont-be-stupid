@@ -30,12 +30,11 @@ export const stateFactory = ({ fetch }: StateFactoryProps) => {
     'catState',
     {
       initial: {
-        chosenCats: new Set(),
+        chosenCats: new Set<string>(),
         level: -1,
         status: STATE.START,
         quests: [],
         answers: new Map(),
-        currentQuest: 0,
         current: '',
       },
       validator(value: QuizStateValue) {
